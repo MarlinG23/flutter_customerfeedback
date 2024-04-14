@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_customerfeedback_api/add_user.dart';
 import 'package:flutter_customerfeedback_api/api_handler.dart';
 import 'package:flutter_customerfeedback_api/edit_page.dart';
+import 'package:flutter_customerfeedback_api/find_user.dart';
 import 'package:flutter_customerfeedback_api/model.dart';
 
 class MainPage extends StatefulWidget {
@@ -17,6 +18,11 @@ class _MainPageState extends State<MainPage> {
 
   void getData() async {
     data = await apiHandler.getUserData();
+    setState(() {});
+  }
+
+  void deleteUser(int userId) async {
+    await apiHandler.deleteUser(userId: userId);
     setState(() {});
   }
 
@@ -42,18 +48,41 @@ class _MainPageState extends State<MainPage> {
         onPressed: getData,
         child: const Text('Refresh'),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AddUser(),
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: 1,
+            backgroundColor: Colors.teal,
+            foregroundColor: Colors.white,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: ((context) => const FindUser()),
+                ),
+              );
+            },
+            child: const Icon(Icons.search),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          FloatingActionButton(
+            heroTag: 2,
+            backgroundColor: Colors.teal,
+            foregroundColor: Colors.white,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AddUser(),
+                ),
+              );
+            },
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -66,16 +95,19 @@ class _MainPageState extends State<MainPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditPage(
-                        user: data[index],
-                      ),
+                      builder: (context) => EditPage(user: data[index]),
                     ),
                   );
                 },
                 leading: Text("${data[index].userId}"),
                 title: Text(data[index].name),
                 subtitle: Text(data[index].email),
-                trailing: Text(data[index].role),
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete_outline),
+                  onPressed: () {
+                    deleteUser(data[index].userId);
+                  },
+                ),
               );
             },
           ),
