@@ -30,4 +30,43 @@ class ApiHandler {
     }
     return data;
   }
+
+  Future<http.Response> updateUser(
+      {required int userId, required User user}) async {
+    final uri = Uri.parse("$baseUri/$userId");
+    late http.Response response;
+
+    try {
+      response = await http.put(
+        uri,
+        headers: <String, String>{
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(user),
+      );
+    } catch (e) {
+      return response;
+    }
+
+    return response;
+  }
+
+  Future<http.Response> addUser({required User user}) async {
+    final uri = Uri.parse(baseUri);
+    late http.Response response;
+
+    try {
+      response = await http.post(
+        uri,
+        headers: <String, String>{
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(user),
+      );
+    } catch (e) {
+      return response;
+    }
+
+    return response;
+  }
 }
