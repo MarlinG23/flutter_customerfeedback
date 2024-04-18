@@ -59,48 +59,63 @@ class _EditPageState extends State<EditPage> {
         },
         child: const Text('Update'),
       ),
-      body: Padding(
-          padding: const EdgeInsets.all(10),
-          child: FormBuilder(
-            key: _formKey,
-            initialValue: {
-              'name': widget.user.name,
-              'email': widget.user.email,
-              'customerfeedback': widget.user.customerfeedback,
-            },
-            child: Column(
-              children: [
-                FormBuilderTextField(
-                  name: 'name',
-                  decoration: const InputDecoration(labelText: 'Name'),
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                  ]),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                FormBuilderTextField(
-                  name: 'email',
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                  ]),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                FormBuilderTextField(
-                  name: 'customerfeedback',
-                  decoration:
-                      const InputDecoration(labelText: 'Customerfeedback'),
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                  ]),
-                ),
-              ],
+      body: Stack(
+        children: [
+          // Background Image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('lib/images/softtouch.png'),
+                fit: BoxFit.cover,
+              ),
             ),
-          )),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: FormBuilder(
+              key: _formKey,
+              initialValue: {
+                'name': widget.user.name,
+                'email': widget.user.email,
+                'customerfeedback': widget.user.customerfeedback,
+              },
+              child: Column(
+                children: [
+                  FormBuilderTextField(
+                    name: 'name',
+                    decoration: const InputDecoration(labelText: 'Name'),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                    ]),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  FormBuilderTextField(
+                    name: 'email',
+                    decoration: const InputDecoration(labelText: 'Email'),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                    ]),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  FormBuilderTextField(
+                    name: 'customerfeedback',
+                    decoration:
+                        const InputDecoration(labelText: 'Customerfeedback'),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                    ]),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

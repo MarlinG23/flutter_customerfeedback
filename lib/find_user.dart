@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_customerfeedback_api/api_handler.dart';
 import 'package:flutter_customerfeedback_api/model.dart';
@@ -15,8 +17,29 @@ class _FindUserState extends State<FindUser> {
   TextEditingController textEditingController = TextEditingController();
 
   void findUser(int userId) async {
-    user = await apiHandler.getUserById(userId: userId);
-    setState(() {});
+    try {
+      user = await apiHandler.getUserById(userId: userId);
+      setState(() {});
+    } catch (e) {
+      // Handle exception when user ID does not exist
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('User ID not found'),
+            content: const Text('The provided user ID does not exist.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -37,23 +60,37 @@ class _FindUserState extends State<FindUser> {
         },
         child: const Text('Find'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            TextField(
-              controller: textEditingController,
+      body: Stack(
+        children: [
+          // Background Image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('lib/images/soft1.jpg'),
+                fit: BoxFit.cover,
+              ),
             ),
-            const SizedBox(
-              height: 10,
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                TextField(
+                  controller: textEditingController,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ListTile(
+                  leading: Text("${user.userId}"),
+                  title: Text(user.name),
+                  subtitle: Text(user.email),
+                ),
+              ],
             ),
-            ListTile(
-              leading: Text("${user.userId}"),
-              title: Text(user.name),
-              subtitle: Text(user.email),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

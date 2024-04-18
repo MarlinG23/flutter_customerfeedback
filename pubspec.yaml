@@ -24,3 +24,6 @@ flutter:
   uses-material-design: true
   assets:
     - lib/images/CapeGlobe.jpg
+    - lib/images/softtouch.png
+    - lib/images/brain.jpg
+    - lib/images/soft1.jpg

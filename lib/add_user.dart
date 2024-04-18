@@ -50,43 +50,57 @@ class _AddUserState extends State<AddUser> {
         onPressed: addUser,
         child: const Text('Add'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: FormBuilder(
-          key: _formKey,
-          child: Column(
-            children: [
-              FormBuilderTextField(
-                name: 'name',
-                decoration: const InputDecoration(labelText: 'Name'),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
+      body: Stack(
+        children: [
+          // Background Image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('lib/images/brain.jpg'),
+                fit: BoxFit.cover,
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              FormBuilderTextField(
-                name: 'email',
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              FormBuilderTextField(
-                name: 'customerfeedback',
-                decoration:
-                    const InputDecoration(labelText: 'Customerfeedback'),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                ]),
-              ),
-            ],
+            ),
           ),
-        ),
+
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: FormBuilder(
+              key: _formKey,
+              child: Column(
+                children: [
+                  FormBuilderTextField(
+                    name: 'name',
+                    decoration: const InputDecoration(labelText: 'Name'),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                    ]),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  FormBuilderTextField(
+                    name: 'email',
+                    decoration: const InputDecoration(labelText: 'Email'),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                    ]),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  FormBuilderTextField(
+                    name: 'customerfeedback',
+                    decoration:
+                        const InputDecoration(labelText: 'Customerfeedback'),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                    ]),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
