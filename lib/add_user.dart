@@ -5,7 +5,9 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 class AddUser extends StatefulWidget {
-  const AddUser({super.key});
+  // const AddUser({super.key});
+  final Function() onUserAdded; // Add this line
+  const AddUser({required this.onUserAdded, super.key}); // Modify this line
 
   @override
   State<AddUser> createState() => _AddUserState();
@@ -23,9 +25,10 @@ class _AddUserState extends State<AddUser> {
         userId: 0,
         name: data['name'],
         email: data['email'],
-        role: data['role'],
+        customerfeedback: data['customerfeedback'],
       );
       await apiHandler.addUser(user: user);
+      widget.onUserAdded(); // Call the callback function when a user is added
     }
     if (!mounted) return;
     Navigator.pop(context);
@@ -35,14 +38,14 @@ class _AddUserState extends State<AddUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add User"),
+        title: const Text("Add feedback"),
         centerTitle: true,
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 187, 239, 248),
+        foregroundColor: const Color.fromARGB(255, 7, 7, 7),
       ),
       bottomNavigationBar: MaterialButton(
-        color: Colors.teal,
-        textColor: Colors.white,
+        color: const Color.fromARGB(255, 187, 239, 248),
+        textColor: const Color.fromARGB(255, 7, 7, 7),
         padding: const EdgeInsets.all(20),
         onPressed: addUser,
         child: const Text('Add'),
@@ -74,8 +77,9 @@ class _AddUserState extends State<AddUser> {
                 height: 10,
               ),
               FormBuilderTextField(
-                name: 'role',
-                decoration: const InputDecoration(labelText: 'Role'),
+                name: 'customerfeedback',
+                decoration:
+                    const InputDecoration(labelText: 'Customerfeedback'),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
                 ]),

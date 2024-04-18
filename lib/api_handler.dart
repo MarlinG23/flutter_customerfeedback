@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_customerfeedback_api/model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiHandler {
-  //api call link to view data on web
+  // api call link to view data on web
   final String baseUri = "https://localhost:7297/api/users";
 
   Future<List<User>> getUserData() async {
@@ -50,7 +51,7 @@ class ApiHandler {
 
   Future<http.Response> addUser({required User user}) async {
     final uri = Uri.parse(baseUri);
-    late http.Response response;
+    http.Response response;
 
     try {
       response = await http.post(
@@ -61,27 +62,36 @@ class ApiHandler {
         body: json.encode(user),
       );
     } catch (e) {
-      return response;
+      response = http.Response('Error occurred: $e', 500);
     }
 
     return response;
   }
 
-  Future<http.Response> deleteUser({required int userId}) async {
+  // delete function with callback
+  Future<void> deleteUser({
+    required int userId,
+    required VoidCallback onSuccess,
+    required VoidCallback onError,
+  }) async {
     final uri = Uri.parse("$baseUri/$userId");
-    late http.Response response;
 
     try {
-      response = await http.delete(
+      final response = await http.delete(
         uri,
         headers: <String, String>{
           'Content-type': 'application/json; charset=UTF-8',
         },
       );
+
+      if (response.statusCode >= 200 && response.statusCode <= 299) {
+        onSuccess(); // Call onSuccess callback on successful deletion
+      } else {
+        onError(); // Call onError callback if deletion fails
+      }
     } catch (e) {
-      return response;
+      onError(); // Call onError callback if an exception occurs
     }
-    return response;
   }
 
   Future<User> getUserById({required int userId}) async {

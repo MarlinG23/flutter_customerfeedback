@@ -25,12 +25,12 @@ class _FindUserState extends State<FindUser> {
       appBar: AppBar(
         title: const Text("Find User"),
         centerTitle: true,
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 187, 239, 248),
+        foregroundColor: const Color.fromARGB(255, 7, 7, 7),
       ),
       bottomNavigationBar: MaterialButton(
-        color: Colors.teal,
-        textColor: Colors.white,
+        color: const Color.fromARGB(255, 187, 239, 248),
+        textColor: const Color.fromARGB(255, 7, 7, 7),
         padding: const EdgeInsets.all(20),
         onPressed: () {
           findUser(int.parse(textEditingController.text));

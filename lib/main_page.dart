@@ -22,8 +22,20 @@ class _MainPageState extends State<MainPage> {
   }
 
   void deleteUser(int userId) async {
-    await apiHandler.deleteUser(userId: userId);
-    setState(() {});
+    await apiHandler.deleteUser(
+      userId: userId,
+      onSuccess: () {
+        // Refresh data after successful deletion
+        getData();
+      },
+      onError: () {
+        // Handle error here
+      },
+    );
+  }
+
+  void _onUserUpdated() {
+    getData();
   }
 
   @override
@@ -38,23 +50,65 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: const Text("Customer Feedback"),
         centerTitle: true,
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 187, 239, 248),
+        foregroundColor: const Color.fromARGB(255, 7, 7, 7),
       ),
-      bottomNavigationBar: MaterialButton(
-        color: Colors.teal,
-        textColor: Colors.white,
-        padding: const EdgeInsets.all(20),
-        onPressed: getData,
-        child: const Text('Refresh'),
+      body: Stack(
+        children: [
+          // Background Image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('lib/images/CapeGlobe.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          // Content
+          Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditPage(
+                                user: data[index], onUpdate: _onUserUpdated),
+                          ),
+                        );
+                      },
+                      leading: Text("${data[index].userId}"),
+                      title: Text(data[index].name),
+                      subtitle: Text(data[index].email),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete_outline),
+                        onPressed: () {
+                          deleteUser(data[index].userId);
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        color: const Color.fromARGB(255, 187, 239, 248),
+        height: 50, // You can adjust the height as needed
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
             heroTag: 1,
-            backgroundColor: Colors.teal,
-            foregroundColor: Colors.white,
+            backgroundColor: const Color.fromARGB(255, 187, 239, 248),
+            foregroundColor: const Color.fromARGB(255, 7, 7, 7),
             onPressed: () {
               Navigator.push(
                 context,
@@ -70,46 +124,18 @@ class _MainPageState extends State<MainPage> {
           ),
           FloatingActionButton(
             heroTag: 2,
-            backgroundColor: Colors.teal,
-            foregroundColor: Colors.white,
+            backgroundColor: const Color.fromARGB(255, 187, 239, 248),
+            foregroundColor: const Color.fromARGB(255, 7, 7, 7),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AddUser(),
+                  builder: (context) => AddUser(
+                      onUserAdded: getData), // Pass getData as the callback
                 ),
               );
             },
             child: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditPage(user: data[index]),
-                    ),
-                  );
-                },
-                leading: Text("${data[index].userId}"),
-                title: Text(data[index].name),
-                subtitle: Text(data[index].email),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete_outline),
-                  onPressed: () {
-                    deleteUser(data[index].userId);
-                  },
-                ),
-              );
-            },
           ),
         ],
       ),
