@@ -7,6 +7,7 @@ Steps to Run app
 -----------------
  1. Launch CustomerfeedbackApi in visual studio
  2. Launch flutter_customerfeedback in vs code (frontend is dependant on CustomerfeedbackApi)
+ 3. 
 - CRUD created for full interaction with DB/swagger and flutter app. 
 - Login functionality currently works using swagger / Front end changes left aside 
 - Code first approach
@@ -25,3 +26,4 @@ Below are a few challenges faced:
 - OneSignal email auth created - few issues, current app gives issues, but on seperate app emails are being sent[figure out why]
 - Personal machine is an i5, so machine boms out connecting to firebase features/onesignal as well
 - outstanding items = Login frontEnd
+- admin to login functionality not created, instead a universal login has been developed
